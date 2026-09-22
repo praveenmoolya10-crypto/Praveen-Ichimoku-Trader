@@ -12,6 +12,9 @@ class AlpacaAdapter:
   key=os.getenv("ALPACA_API_KEY"); secret=os.getenv("ALPACA_SECRET_KEY")
   if not key or not secret:self.client=None;self.data=None;return
   self.client=TradingClient(key,secret,paper=True);self.data=StockHistoricalDataClient(key,secret)
+ def configure(self,key,secret,paper=True):
+  if not key or not secret: raise ValueError("API key and secret are required")
+  self.client=TradingClient(key,secret,paper=paper);self.data=StockHistoricalDataClient(key,secret)
  def configured(self):return self.client is not None
  def account(self):
   if not self.client:return {"status":"not_configured"}
