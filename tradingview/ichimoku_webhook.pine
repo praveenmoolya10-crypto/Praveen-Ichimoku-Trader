@@ -1,0 +1,20 @@
+//@version=6
+strategy("Praveen Ichimoku Webhook", overlay=true, pyramiding=0)
+tenkan=(ta.highest(high,9)+ta.lowest(low,9))/2
+kijun=(ta.highest(high,26)+ta.lowest(low,26))/2
+spanA=(tenkan+kijun)/2
+spanB=(ta.highest(high,52)+ta.lowest(low,52))/2
+bull=close>math.max(spanA[26],spanB[26]) and tenkan>kijun
+bear=close<math.min(spanA[26],spanB[26]) and tenkan<kijun
+buy=bull and not bull[1]
+sell=bear and not bear[1]
+if buy
+    strategy.entry("BUY",strategy.long)
+if sell
+    strategy.close("BUY")
+alertcondition(buy,"BUY","BUY")
+alertcondition(sell,"SELL","SELL")
+plot(tenkan,"Tenkan")
+plot(kijun,"Kijun")
+plot(spanA,"Span A")
+plot(spanB,"Span B")
